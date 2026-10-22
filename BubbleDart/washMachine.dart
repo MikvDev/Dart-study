@@ -28,8 +28,9 @@ class Washmachine {
   // Seta quantidade roupas
   set clothes(List<String> newClothes) {
     if (newClothes.length > _clothingMaxQuantity) {
-      print("A capacidade de roupas ultrapassa o limite da maquina!");
-      return;
+      
+      throw ArgumentError("A capacidade de roupas ultrapassa o limite da maquina!");
+      
     } else {
       _clothes = newClothes;
     }
@@ -89,7 +90,8 @@ class Washmachine {
         index++;
       } else {
         print("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨");
-        print("Lavagem finalizada!");
+       
+        print("Lavagem finalizada! \a");
         print("Roupas limpas 🧽: $_clothes");
         _clothes = [];
         _isFree = true;
@@ -132,6 +134,7 @@ void main() {
       '👕',
       '👕',
       '👕',
+
     ],
     true,
     Duration(minutes: 1),
