@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 class Washmachine {
   // Para atributos usamos o camel case | Primeira minuscula e segunda maiuscula
@@ -11,10 +12,12 @@ class Washmachine {
   Washmachine(
     this._type,
     this._clothingMaxQuantity,
-    this._clothes,
+    List<String> clothingInput,
     this._isFree,
     this._timeWash,
-  );
+  ) {
+    this.clothes = clothingInput;
+  }
   // Seta o tipo
   set type(TypeMachineEnum newType) {
     _type = newType;
@@ -24,7 +27,7 @@ class Washmachine {
   TypeMachineEnum get type => _type;
   // Seta quantidade roupas
   set clothes(List<String> newClothes) {
-     if (newClothes.length > _clothingMaxQuantity) {
+    if (newClothes.length > _clothingMaxQuantity) {
       print("A capacidade de roupas ultrapassa o limite da maquina!");
       return;
     } else {
@@ -59,6 +62,9 @@ class Washmachine {
   }
 
   void startWashMachine() {
+    List<String> spinner = ['|', '/', '-', '\\'];
+    int index = 0;
+
     if (_isFree == false) {
       print(
         "Maquina está em uso, não pode ser começar outra lavagem no momento..",
@@ -71,12 +77,16 @@ class Washmachine {
     _isFree = false;
     int remainingSeconds = _timeWash.inSeconds;
 
-    print("Iniciando lavagem! Roupas: ${_clothes.join()}\n");
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      remainingSeconds--;
-
+    print("Quantidade de roupas: ${_clothes.length}\n");
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
       if (remainingSeconds > 0) {
-        print("lavando.... Tempo de lavagem restante: $remainingSeconds");
+        if (index % 10 == 0) {
+          remainingSeconds--;
+        }
+        stdout.write(
+          "\r${spinner[index % spinner.length]} lavando...  Tempo restante: $remainingSeconds's' ",
+        );
+        index++;
       } else {
         print("\n¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨");
         print("Lavagem finalizada!");
@@ -105,9 +115,26 @@ void main() {
   Washmachine washmachine1 = Washmachine(
     TypeMachineEnum.lavadora,
     15,
-    ['👕', '👕', '👕', '👕'],
+    [
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+      '👕',
+    ],
     true,
-    Duration(seconds: 3),
+    Duration(minutes: 1),
   );
 
   washmachine1.showInformationMachine();
